@@ -17,13 +17,13 @@ function onAddItemSubmit(e) {
 
   const newItem = itemInput.value;
 
-  // Validate Input
+  
   if (newItem === '') {
     alert('Please add an item');
     return;
   }
 
-  // Check for edit mode
+  
   if (isEditMode) {
     if (checkIfItemExists(newItem)) {
       alert('That item already exists!');
@@ -44,10 +44,9 @@ function onAddItemSubmit(e) {
     }
   }
 
-  // Create item DOM element
   addItemToDOM(newItem);
 
-  // Add item to local storage
+
   addItemToStorage(newItem);
 
   checkUI();
@@ -56,14 +55,14 @@ function onAddItemSubmit(e) {
 }
 
 function addItemToDOM(item) {
-  // Create list item
+
   const li = document.createElement('li');
   li.appendChild(document.createTextNode(item));
 
   const button = createButton('remove-item btn-link text-red');
   li.appendChild(button);
 
-  // Add li to the DOM
+
   itemList.appendChild(li);
 }
 
@@ -84,10 +83,10 @@ function createIcon(classes) {
 function addItemToStorage(item) {
   const itemsFromStorage = getItemsFromStorage();
 
-  // Add new item to array
+  
   itemsFromStorage.push(item);
 
-  // Convert to JSON string and set to local storage
+  
   localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
@@ -131,10 +130,7 @@ function setItemToEdit(item) {
 
 function removeItem(item) {
   if (confirm('Are you sure?')) {
-    // Remove item from DOM
     item.remove();
-
-    // Remove item from storage
     removeItemFromStorage(item.textContent);
 
     checkUI();
@@ -144,19 +140,20 @@ function removeItem(item) {
 function removeItemFromStorage(item) {
   let itemsFromStorage = getItemsFromStorage();
 
-  // Filter out item to be removed
   itemsFromStorage = itemsFromStorage.filter((i) => i !== item);
 
-  // Re-set to localstorage
+ 
   localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
 function clearItems() {
-  while (itemList.firstChild) {
-    itemList.removeChild(itemList.firstChild);
+  if(confirm("Do you wish to delete all?")){
+    while (itemList.firstChild) {
+      itemList.removeChild(itemList.firstChild);
+    }
   }
+  
 
-  // Clear from localStorage
   localStorage.removeItem('items');
 
   checkUI();
@@ -194,9 +191,8 @@ function checkUI() {
   isEditMode = false;
 }
 
-// Initialize app
-function init() {
-  // Event Listeners
+
+ 
   itemForm.addEventListener('submit', onAddItemSubmit);
   itemList.addEventListener('click', onClickItem);
   clearBtn.addEventListener('click', clearItems);
@@ -204,6 +200,6 @@ function init() {
   document.addEventListener('DOMContentLoaded', displayItems);
 
   checkUI();
-}
 
-init();
+
+
